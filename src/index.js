@@ -6,13 +6,14 @@ import Notiflix from 'notiflix';
 const DEBOUNCE_DELAY = 300;
 
 const searchField = document.querySelector('#search-box');
-const countryList = document.querySelector(".country-list")
+const countryList = document.querySelector(".country-list");
+const countryInfo = document.querySelector(".country-info")
 
 searchField.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
 
-function onInput() {
-	const countryName = searchField.value;
-	console.log(searchField.value);
+function onInput(e) {
+	const countryName = e.target.value;
+	console.log(countryName);
 
 	fetchCountries(countryName)
 		.then(countries => {
@@ -20,9 +21,24 @@ function onInput() {
 			if (countries.length > 10) {
 				return Notiflix.Notify.info(`Too many matches found. Please enter a more specific name.`)
 			}
-			renderCountryList(countries)
+
+			if (countries.length >= 2 && countries.length <= 10) {
+				renderCountrylist(countries);
+				return;
+			}
+
+			if (!countries) {
+				throw new Error();
+			}
+
+			// if (countryName = ' ') {
+			// 	countryInfo.innerHTML = '';
+			// 	countryList.innerHTML = '';
+			// }
+
+			renderCountryInfo(countries)
 		})
-		.catch(err => console.log(err))
+		.catch(() => Notiflix.Notify.failure(`Oops, there is no country with that name`))
 }
 
 function fetchCountries(name) {
@@ -31,20 +47,26 @@ function fetchCountries(name) {
 }
 
 
-function renderCountryList(countries) {
+function renderCountryInfo(countries) {
 	const murkap = countries.map(country => {
 		console.log(country);
-		return `	<li><img src="${country.flags.svg}" alt="${country.name.official}" width="30" height="30"><h2>${country.name.official}</h2><p><span>capital</span>${country.capital}</p>
+		return `	<li><img src="${country.flags.svg}" alt="${country.name.official}" width="30" height="30" /><h2>${country.name.official}</h2><p><span>capital</span>${country.capital}</p>
 		<p><span>population</span>${country.population}</p>
 		<p><span>languages</span>${Object.values(country.languages)}</p>
 	</li>`
 	}).join('');
-	countryList.innerHTML = murkap;
+	countryInfo.innerHTML = murkap;
 }
 
 
-
-
+function renderCountrylist(countries) {
+	const murkap = countries.map(country => {
+		console.log(country);
+		return `<li><img src="${country.flags.svg}" alt="${country.name.official}" width="30" height="30"/>
+		<h2>${country.name.official}</h2></li>`
+	}).join('');
+	countryList.innerHTML = murkap;
+}
 
 
 
