@@ -17,7 +17,7 @@ function onInput(e) {
 	fetchCountries(countryName)
 		.then(countries => {
 			if (countries.length > 10) {
-				return Notiflix.Notify.info(`Too many matches found. Please enter a more specific name.`)
+				return Notiflix.Notify.info(`Too many matches found. Please enter a more specific name.`, { position: "center-top" })
 			}
 
 			if (countries.length >= 2 && countries.length <= 10) {
