@@ -42,7 +42,7 @@ function onInput(e) {
 			renderCountryInfo(countries)
 
 		})
-		.catch(() => Notiflix.Notify.failure(`Oops, there is no country with that name`))
+		.catch(() => Notiflix.Notify.failure(`Oops, there is no country with that name`, { position: "center-top" }))
 
 }
 
