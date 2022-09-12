@@ -16,13 +16,14 @@ function onInput(e) {
 
 	fetchCountries(countryName)
 		.then(countries => {
+			clearInfo();
+
 			if (countries.length > 10) {
 				return Notiflix.Notify.info(`Too many matches found. Please enter a more specific name.`, { position: "center-top" })
 			}
 
+
 			if (countries.length >= 2 && countries.length <= 10) {
-				countryList.innerHTML = '';
-				countryInfo.innerHTML = '';
 				renderCountrylist(countries);
 				return;
 			}
@@ -32,13 +33,9 @@ function onInput(e) {
 			}
 
 			if (countryName === '') {
-				countryInfo.innerHTML = '';
-				countryList.innerHTML = '';
 				return;
 			}
 
-			countryInfo.innerHTML = '';
-			countryList.innerHTML = '';
 			renderCountryInfo(countries)
 
 		})
@@ -67,6 +64,10 @@ function renderCountrylist(countries) {
 	countryList.insertAdjacentHTML('beforeend', murkap)
 }
 
+function clearInfo() {
+	countryList.innerHTML = '';
+	countryInfo.innerHTML = '';
+}
 
 
 
